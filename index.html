@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Prayer Wall — A Community Prayer Space</title>
+<meta name="description" content="A peaceful place to share prayer requests, pray for others, and celebrate answered prayers." />
+<meta property="og:title" content="Prayer Wall" />
+<meta property="og:description" content="A peaceful place to share prayer requests, pray for others, and celebrate answered prayers." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --surface-2: #f4f3ee;
+    --ink: #1a1a1a;
+    --ink-2: #454540;
+    --muted: #8a8a80;
+    --line: #e8e6df;
+    --accent: #2d5a4f;
+    --accent-2: #c9a961;
+    --urgent: #b8422f;
+    --answered: #3d7a5f;
+    --radius: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 1px 2px rgba(26,26,26,.04), 0 8px 24px rgba(26,26,26,.04);
+    --shadow-lg: 0 2px 4px rgba(26,26,26,.06), 0 16px 40px rgba(26,26,26,.06);
+    --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .nav { position: sticky; top: 0; z-index: 40; background: rgba(250,250,247,.85); backdrop-filter: saturate(180%) blur(10px); -webkit-backdrop-filter: saturate(180%) blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-inner { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 500; font-size: 20px; letter-spacing: -0.01em; color: var(--ink); }
+  .brand-mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), #4a8a7a); display: grid; place-items: center; color: #fff; font-weight: 600; }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-btn { background: transparent; border: 0; padding: 8px 14px; border-radius: 999px; color: var(--ink-2); font-size: 14px; font-weight: 500; }
+  .nav-btn:hover { background: var(--surface-2); color: var(--ink); }
+  .nav-btn.active { background: var(--ink); color: #fff; }
+  .nav-cta { background: var(--accent); color: #fff; border: 0; padding: 9px 16px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+  .nav-cta:hover { background: #244d43; }
+
+  .hero { max-width: 1120px; margin: 0 auto; padding: 72px 24px 40px; text-align: center; }
+  .hero h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(36px, 6vw, 60px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 18px; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero p.lede { max-width: 600px; margin: 0 auto 28px; font-size: 17px; color: var(--ink-2); }
+  .hero-cta { display: inline-flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 15px; font-weight: 500; transition: all .15s ease; }
+  .btn:hover { border-color: var(--ink); }
+  .btn.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .btn.primary:hover { background: #000; }
+  .btn.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.accent:hover { background: #244d43; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .verse { max-width: 880px; margin: 0 auto 24px; padding: 0 24px; text-align: center; }
+  .verse blockquote { margin: 0; font-family: var(--serif); font-style: italic; font-size: 19px; color: var(--ink-2); line-height: 1.5; }
+  .verse cite { display: block; margin-top: 10px; font-family: var(--sans); font-style: normal; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  section.page { max-width: 1120px; margin: 0 auto; padding: 24px 24px 80px; }
+  .page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+  .page-header h2 { font-family: var(--serif); font-weight: 500; font-size: 32px; letter-spacing: -0.01em; margin: 0 0 4px; }
+  .page-header p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 24px; }
+  .search { position: relative; flex: 1 1 240px; min-width: 220px; }
+  .search input { width: 100%; padding: 11px 14px 11px 40px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; font-family: inherit; background: var(--surface); color: var(--ink); transition: border-color .15s; }
+  .search input:focus { outline: none; border-color: var(--ink); }
+  .search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
+  select { padding: 11px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink); font-size: 14px; font-family: inherit; cursor: pointer; }
+  select:focus { outline: none; border-color: var(--ink); }
+
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink-2); font-size: 13px; font-weight: 500; cursor: pointer; transition: all .15s; }
+  .chip:hover { border-color: var(--ink-2); color: var(--ink); }
+  .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 14px; transition: border-color .15s, transform .15s; }
+  .card:hover { border-color: #d3d1c9; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .cat-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--surface-2); color: var(--ink-2); }
+  .cat-badge.urgent { background: #fcebe6; color: var(--urgent); }
+  .cat-badge.answered { background: #e6f1ea; color: var(--answered); }
+  .card-time { font-size: 12px; color: var(--muted); }
+  .card-title { font-family: var(--serif); font-weight: 500; font-size: 20px; line-height: 1.3; margin: 0; letter-spacing: -0.005em; }
+  .card-body { font-size: 14.5px; color: var(--ink-2); white-space: pre-wrap; word-break: break-word; }
+  .card-author { font-size: 13px; color: var(--muted); }
+  .card-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 4px; }
+  .pray-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 13px; font-weight: 500; transition: all .15s; }
+  .pray-btn:hover { background: var(--surface-2); border-color: var(--ink-2); }
+  .pray-btn.prayed { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .pray-btn.prayed:hover { background: #244d43; }
+  .pray-count { font-size: 13px; color: var(--muted); }
+  .card-actions { display: flex; gap: 6px; }
+  .icon-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); display: grid; place-items: center; }
+  .icon-btn:hover { border-color: var(--ink-2); color: var(--ink); }
+  .icon-btn svg { width: 15px; height: 15px; }
+
+  .form-wrap { max-width: 640px; margin: 0 auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; }
+  .field { margin-bottom: 18px; }
+  .field label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 500; color: var(--ink-2); letter-spacing: 0.01em; }
+  .field input[type="text"], .field textarea, .field select { width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); font-family: inherit; font-size: 15px; transition: border-color .15s, background .15s; }
+  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--ink); background: var(--surface); }
+  .field textarea { min-height: 120px; resize: vertical; }
+  .checkrow { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; background: var(--surface-2); border-radius: var(--radius-sm); margin-bottom: 10px; }
+  .checkrow input[type="checkbox"] { margin-top: 3px; }
+  .checkrow label { margin: 0; font-size: 14px; color: var(--ink); font-weight: 500; }
+  .checkrow .hint { font-size: 13px; color: var(--muted); display: block; margin-top: 2px; font-weight: 400; }
+  .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+
+  .empty { text-align: center; padding: 80px 24px; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius); }
+  .empty h3 { font-family: var(--serif); color: var(--ink); margin: 0 0 8px; font-weight: 500; }
+  .empty p { margin: 0; }
+
+  .groups-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-bottom: 40px; }
+  .group-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: flex; flex-direction: column; gap: 10px; cursor: pointer; transition: border-color .15s; }
+  .group-card:hover { border-color: var(--ink-2); }
+  .group-card h3 { font-family: var(--serif); font-weight: 500; margin: 0; font-size: 20px; }
+  .group-card p { margin: 0; color: var(--ink-2); font-size: 14px; }
+  .group-meta { display: flex; gap: 16px; color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+  .modal-backdrop { position: fixed; inset: 0; z-index: 100; background: rgba(26,26,26,.55); display: grid; place-items: center; padding: 20px; animation: fadeIn .15s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 560px; max-height: 86vh; overflow-y: auto; padding: 28px; box-shadow: var(--shadow-lg); }
+  .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .modal-head h3 { font-family: var(--serif); font-weight: 500; font-size: 24px; margin: 0; }
+  .close-btn { border: 0; background: transparent; color: var(--muted); font-size: 24px; line-height: 1; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; }
+  .close-btn:hover { background: var(--surface-2); color: var(--ink); }
+
+  .thread { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+  .thread-item { padding: 12px 14px; background: var(--surface-2); border-radius: var(--radius-sm); font-size: 14px; }
+  .thread-item .who { font-weight: 600; color: var(--ink); font-size: 13px; }
+  .thread-item .when { color: var(--muted); font-size: 12px; margin-left: 6px; }
+  .thread-item p { margin: 4px 0 0; color: var(--ink-2); }
+  .thread-form { display: flex; gap: 8px; margin-top: 12px; }
+  .thread-form input { flex: 1; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; background: var(--bg); }
+  .thread-form input:focus { outline: none; border-color: var(--ink); background: var(--surface); }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 999px; font-size: 14px; font-weight: 500; box-shadow: var(--shadow-lg); z-index: 200; animation: toastIn .25s ease; }
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+  .banner { background: #fcf4e3; border-bottom: 1px solid #eadfb8; color: #6b5a20; padding: 10px 24px; text-align: center; font-size: 14px; }
+  .banner code { background: #fff; padding: 1px 6px; border-radius: 4px; border: 1px solid #eadfb8; font-size: 12px; }
+
+  .loading { display: flex; align-items: center; justify-content: center; padding: 60px 24px; color: var(--muted); font-size: 14px; }
+  .loading .spinner { width: 18px; height: 18px; border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  footer { border-top: 1px solid var(--line); padding: 40px 24px; text-align: center; color: var(--muted); font-size: 13px; background: var(--surface); }
+  footer .verse { margin-bottom: 18px; }
+  footer .verse blockquote { font-size: 17px; }
+
+  .hidden { display: none !important; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+  @media (max-width: 640px) {
+    .nav-inner { padding: 12px 16px; }
+    .nav-links .nav-btn { padding: 8px 10px; font-size: 13px; }
+    .nav-links .nav-btn[data-page="groups"] { display: none; }
+    .hero { padding: 48px 20px 32px; }
+    section.page { padding: 16px 16px 64px; }
+    .form-wrap { padding: 22px; }
+    .modal { padding: 22px; }
+    .toolbar { gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Shows only if Supabase isn't configured. Hidden automatically once keys are set. -->
+<div id="setup-banner" class="banner hidden">
+  Backend not configured yet. Open <code>index.html</code> and replace <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> with your project values. See <code>DEPLOY.md</code>.
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <span>Prayer Wall</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-btn active" data-page="wall">Wall</button>
+      <button class="nav-btn" data-page="answered">Answered</button>
+      <button class="nav-btn" data-page="groups">Groups</button>
+      <button class="nav-cta" data-page="submit">+ Share a prayer</button>
+    </div>
+  </div>
+</nav>
+
+<div id="hero" class="hero">
+  <h1>A quiet place to <em>pray together</em>.</h1>
+  <p class="lede">Share what's on your heart. Lift up others. Return to celebrate answered prayers.</p>
+  <div class="hero-cta">
+    <button class="btn accent" data-page="submit">Share a prayer request</button>
+    <button class="btn" onclick="document.getElementById('wall-section').scrollIntoView({behavior:'smooth'})">Browse the wall</button>
+  </div>
+</div>
+
+<div id="top-verse" class="verse"></div>
+
+<section id="wall-section" class="page">
+  <div class="page-header">
+    <div>
+      <h2>Prayer Wall</h2>
+      <p id="wall-count">—</p>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search" type="text" placeholder="Search prayer requests..." aria-label="Search" />
+    </div>
+    <select id="sort" aria-label="Sort">
+      <option value="newest">Newest first</option>
+      <option value="urgent">Most urgent</option>
+      <option value="popular">Most prayed for</option>
+      <option value="oldest">Oldest first</option>
+    </select>
+  </div>
+  <div class="chips" id="cat-chips" style="margin-bottom: 24px;"></div>
+  <div id="wall" class="grid"></div>
+</section>
+
+<section id="answered-section" class="page hidden">
+  <div class="page-header">
+    <div>
+      <h2>Answered Prayers</h2>
+      <p>Testimonies of God's faithfulness.</p>
+    </div>
+  </div>
+  <div class="verse" style="margin-bottom: 32px;">
+    <blockquote>"Give thanks to the Lord, for he is good; his love endures forever."</blockquote>
+    <cite>Psalm 107:1</cite>
+  </div>
+  <div id="answered" class="grid"></div>
+</section>
+
+<section id="groups-section" class="page hidden">
+  <div class="page-header">
+    <div>
+      <h2>Prayer Groups</h2>
+      <p>Smaller circles for deeper prayer.</p>
+    </div>
+    <button class="btn" id="new-group-btn">+ New group</button>
+  </div>
+  <div id="groups" class="groups-grid"></div>
+</section>
+
+<section id="submit-section" class="page hidden">
+  <div class="page-header" style="justify-content:center; text-align:center; display:block; border:0;">
+    <h2>Share a prayer</h2>
+    <p>Your words matter. Someone here will pray for you.</p>
+  </div>
+  <form id="prayer-form" class="form-wrap" autocomplete="off">
+    <div class="field">
+      <label for="f-title">Title</label>
+      <input id="f-title" type="text" required maxlength="120" placeholder="A short headline for your request" />
+    </div>
+    <div class="field">
+      <label for="f-body">Your request</label>
+      <textarea id="f-body" required maxlength="4000" placeholder="Share what you'd like prayer for. Be as specific as you'd like."></textarea>
+    </div>
+    <div class="field">
+      <label for="f-cat">Category</label>
+      <select id="f-cat" required>
+        <option value="">Choose a category...</option>
+        <option value="Health">Health</option>
+        <option value="Family">Family</option>
+        <option value="Gratitude">Gratitude</option>
+        <option value="Work">Work & Finances</option>
+        <option value="Relationships">Relationships</option>
+        <option value="Grief">Grief & Loss</option>
+        <option value="Faith">Faith Journey</option>
+        <option value="Guidance">Guidance</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-name">Your name (optional)</label>
+      <input id="f-name" type="text" maxlength="40" placeholder="Leave blank to post anonymously" />
+    </div>
+    <div class="checkrow">
+      <input id="f-urgent" type="checkbox" />
+      <label for="f-urgent">Mark as urgent
+        <span class="hint">Urgent requests appear highlighted and sort to the top.</span>
+      </label>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn" data-page="wall">Cancel</button>
+      <button type="submit" class="btn accent" id="submit-btn">Post prayer request</button>
+    </div>
+  </form>
+</section>
+
+<footer>
+  <div class="verse">
+    <blockquote id="footer-verse-text">"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."</blockquote>
+    <cite id="footer-verse-ref">Philippians 4:6</cite>
+  </div>
+  <div>Prayer Wall · A community prayer space</div>
+  <div style="margin-top:6px; font-size:12px;">Requests are visible to all visitors. Please don't include sensitive personal details.</div>
+</footer>
+
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+
+<!-- Supabase client from CDN -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<script>
+/* =========================================================
+   Prayer Wall — Production
+   Requires a Supabase project. See DEPLOY.md for setup.
+   ========================================================= */
+
+// >>> PASTE YOUR SUPABASE CREDENTIALS HERE <<<
+// Get these from: Supabase Dashboard → Project Settings → API
+const SUPABASE_URL      = 'https://wpkvhkvgoopcswlwvoou.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa3Zoa3Znb29wY3N3bHd2b291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4MTc5NjQsImV4cCI6MjA5MjM5Mzk2NH0.SwSEm2J9sEkXkJZkeXl3bMPGGUE8xdpQePogbDNmAjM';
+
+const IS_CONFIGURED = SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 20;
+
+let sb = null;
+if (IS_CONFIGURED) {
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} else {
+  document.getElementById('setup-banner').classList.remove('hidden');
+}
+
+// ---------- CLIENT ID (anonymous identity) ----------
+let CLIENT_ID = localStorage.getItem('pw.client_id');
+if (!CLIENT_ID) {
+  CLIENT_ID = 'c-' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+  localStorage.setItem('pw.client_id', CLIENT_ID);
+}
+
+// ---------- STATE ----------
+const state = {
+  prayers: [],
+  groups: [],
+  prayedIds: new Set(),
+  joinedGroupIds: new Set(),
+  currentPage: 'wall',
+  currentCategory: 'All',
+  currentSort: 'newest',
+  currentSearch: '',
+  loading: true,
+};
+
+// ---------- CONSTANTS ----------
+const VERSES = [
+  { text: "The Lord is near to all who call on him, to all who call on him in truth.", ref: "Psalm 145:18" },
+  { text: "Cast all your anxiety on him because he cares for you.", ref: "1 Peter 5:7" },
+  { text: "Ask and it will be given to you; seek and you will find; knock and the door will be opened to you.", ref: "Matthew 7:7" },
+  { text: "The prayer of a righteous person is powerful and effective.", ref: "James 5:16" },
+  { text: "Be still, and know that I am God.", ref: "Psalm 46:10" },
+  { text: "Rejoice always, pray continually, give thanks in all circumstances.", ref: "1 Thessalonians 5:16-18" },
+  { text: "Come to me, all you who are weary and burdened, and I will give you rest.", ref: "Matthew 11:28" },
+  { text: "Let us then approach God's throne of grace with confidence.", ref: "Hebrews 4:16" },
+  { text: "The Lord is my shepherd; I lack nothing.", ref: "Psalm 23:1" },
+  { text: "Commit to the Lord whatever you do, and he will establish your plans.", ref: "Proverbs 16:3" },
+  { text: "Weeping may stay for the night, but rejoicing comes in the morning.", ref: "Psalm 30:5" },
+  { text: "He heals the brokenhearted and binds up their wounds.", ref: "Psalm 147:3" },
+];
+const CATEGORIES = ["All", "Health", "Family", "Gratitude", "Work", "Relationships", "Grief", "Faith", "Guidance", "Other"];
+
+// ---------- HELPERS ----------
+function fmtTime(ts) {
+  const t = new Date(ts).getTime();
+  const diff = Date.now() - t;
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  const d = Math.floor(h / 24);
+  if (d < 7) return d + 'd ago';
+  return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+function escapeHTML(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+function pickVerse() { return VERSES[Math.floor(Math.random() * VERSES.length)]; }
+function toast(msg) {
+  const root = document.getElementById('toast-root');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  root.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translate(-50%, 8px)'; el.style.transition = 'all .2s'; }, 2200);
+  setTimeout(() => el.remove(), 2500);
+}
+
+// ---------- DATA LAYER (Supabase) ----------
+async function loadPrayers() {
+  if (!sb) return;
+  const { data, error } = await sb.from('prayer_feed').select('*').order('created_at', { ascending: false });
+  if (error) { console.error('loadPrayers', error); toast('Could not load prayers'); return; }
+  state.prayers = data || [];
+}
+async function loadPrayedByMe() {
+  if (!sb) return;
+  const { data } = await sb.from('prayed_for').select('prayer_id').eq('client_id', CLIENT_ID);
+  state.prayedIds = new Set((data || []).map(x => x.prayer_id));
+}
+async function loadGroups() {
+  if (!sb) return;
+  const { data, error } = await sb.from('group_feed').select('*').order('created_at', { ascending: false });
+  if (error) { console.error('loadGroups', error); return; }
+  state.groups = data || [];
+}
+async function loadJoinedGroups() {
+  if (!sb) return;
+  const { data } = await sb.from('group_members').select('group_id').eq('client_id', CLIENT_ID);
+  state.joinedGroupIds = new Set((data || []).map(x => x.group_id));
+}
+
+async function createPrayer(payload) {
+  if (!sb) return null;
+  const { data, error } = await sb.from('prayers').insert({
+    title: payload.title,
+    body:  payload.body,
+    category: payload.category,
+    author_name: payload.name || null,
+    client_id: CLIENT_ID,
+    urgent: !!payload.urgent,
+  }).select().single();
+  if (error) { console.error(error); toast('Could not post prayer'); return null; }
+  return data;
+}
+async function togglePrayed(prayerId) {
+  if (!sb) return;
+  if (state.prayedIds.has(prayerId)) {
+    const { error } = await sb.from('prayed_for').delete()
+      .eq('prayer_id', prayerId).eq('client_id', CLIENT_ID);
+    if (error) { toast('Could not update'); return; }
+    state.prayedIds.delete(prayerId);
+  } else {
+    const { error } = await sb.from('prayed_for').insert({
+      prayer_id: prayerId, client_id: CLIENT_ID,
+    });
+    if (error) { toast('Could not update'); return; }
+    state.prayedIds.add(prayerId);
+    toast('Thank you for praying · a blessing shared');
+  }
+  await loadPrayers();
+  renderCurrent();
+}
+async function markAnswered(prayerId, note) {
+  if (!sb) return;
+  const { error } = await sb.from('prayers').update({
+    answered: true,
+    answered_note: note || null,
+    answered_at: new Date().toISOString(),
+  }).eq('id', prayerId);
+  if (error) { toast('Could not mark answered'); return; }
+  toast('Praise God — marked as answered');
+  await loadPrayers();
+  renderCurrent();
+}
+async function fetchComments(prayerId) {
+  if (!sb) return [];
+  const { data } = await sb.from('comments').select('*').eq('prayer_id', prayerId).order('created_at', { ascending: true });
+  return data || [];
+}
+async function addComment(prayerId, text, name) {
+  if (!sb) return;
+  const { error } = await sb.from('comments').insert({
+    prayer_id: prayerId, client_id: CLIENT_ID,
+    author_name: name || null, body: text,
+  });
+  if (error) { toast('Could not post'); return; }
+  toast('Encouragement posted');
+}
+async function fetchGroupPosts(groupId) {
+  if (!sb) return [];
+  const { data } = await sb.from('group_posts').select('*').eq('group_id', groupId).order('created_at', { ascending: true });
+  return data || [];
+}
+async function addGroupPost(groupId, text, name) {
+  if (!sb) return;
+  const { error } = await sb.from('group_posts').insert({
+    group_id: groupId, client_id: CLIENT_ID,
+    author_name: name || null, body: text,
+  });
+  if (error) { toast('Could not post'); return; }
+}
+async function joinGroup(groupId) {
+  if (!sb) return;
+  const { error } = await sb.from('group_members').insert({
+    group_id: groupId, client_id: CLIENT_ID,
+  });
+  if (!error) { state.joinedGroupIds.add(groupId); toast('Joined group'); }
+}
+async function createGroup(name, description) {
+  if (!sb) return null;
+  const { data, error } = await sb.from('groups').insert({ name, description }).select().single();
+  if (error) { toast('Could not create group'); return null; }
+  await joinGroup(data.id);
+  return data;
+}
+
+// ---------- FILTERS ----------
+function filterAndSort(list, { onlyAnswered = false } = {}) {
+  let out = list.slice();
+  out = onlyAnswered ? out.filter(p => p.answered) : out.filter(p => !p.answered);
+  if (state.currentCategory !== 'All') out = out.filter(p => p.category === state.currentCategory);
+  if (state.currentSearch) {
+    const q = state.currentSearch.toLowerCase();
+    out = out.filter(p =>
+      (p.title || '').toLowerCase().includes(q) ||
+      (p.body  || '').toLowerCase().includes(q) ||
+      (p.author_name || '').toLowerCase().includes(q));
+  }
+  switch (state.currentSort) {
+    case 'urgent':  out.sort((a,b) => (b.urgent?1:0) - (a.urgent?1:0) || new Date(b.created_at) - new Date(a.created_at)); break;
+    case 'popular': out.sort((a,b) => (b.prayed_count||0) - (a.prayed_count||0)); break;
+    case 'oldest':  out.sort((a,b) => new Date(a.created_at) - new Date(b.created_at)); break;
+    default:        out.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  }
+  return out;
+}
+
+// ---------- RENDER: VERSE ----------
+function renderTopVerse() {
+  const v = pickVerse();
+  document.getElementById('top-verse').innerHTML = `
+    <blockquote>"${escapeHTML(v.text)}"</blockquote>
+    <cite>${escapeHTML(v.ref)}</cite>`;
+}
+
+// ---------- RENDER: CHIPS ----------
+function renderChips() {
+  const root = document.getElementById('cat-chips');
+  root.innerHTML = CATEGORIES.map(c => `<button class="chip ${c === state.currentCategory ? 'active' : ''}" data-cat="${escapeHTML(c)}">${escapeHTML(c)}</button>`).join('');
+  root.querySelectorAll('.chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.currentCategory = btn.dataset.cat;
+      renderChips();
+      renderWall();
+    });
+  });
+}
+
+// ---------- RENDER: CARD ----------
+function cardHTML(p) {
+  const prayed = state.prayedIds.has(p.id);
+  const count = p.prayed_count || 0;
+  const badgeClass = p.answered ? 'answered' : (p.urgent ? 'urgent' : '');
+  const badgeText = p.answered ? 'Answered · ' + p.category : (p.urgent ? 'Urgent · ' + p.category : p.category);
+  const author = (p.author_name && p.author_name.trim()) ? escapeHTML(p.author_name) : 'Anonymous';
+  const answeredBlock = p.answered && p.answered_note ? `
+    <div style="padding:12px 14px; background:#e6f1ea; border-radius:10px; font-size:14px; color:#2a5a44;">
+      <strong style="display:block; margin-bottom:4px; font-size:12px; letter-spacing:.05em; text-transform:uppercase;">Update</strong>
+      ${escapeHTML(p.answered_note)}
+    </div>` : '';
+  const canMark = !p.answered && p.client_id === CLIENT_ID;
+
+  return `
+    <article class="card" data-id="${p.id}">
+      <div class="card-head">
+        <span class="cat-badge ${badgeClass}">${escapeHTML(badgeText)}</span>
+        <span class="card-time">${fmtTime(p.created_at)}</span>
+      </div>
+      <h3 class="card-title">${escapeHTML(p.title)}</h3>
+      <div class="card-body">${escapeHTML(p.body)}</div>
+      ${answeredBlock}
+      <div class="card-author">— ${author}</div>
+      <div class="card-foot">
+        <button class="pray-btn ${prayed ? 'prayed' : ''}" data-act="pray" data-id="${p.id}">
+          ${prayed ? '✓ Prayed' : 'I prayed for this'}
+        </button>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="pray-count">${count} ${count === 1 ? 'prayer' : 'prayers'}</span>
+          <div class="card-actions">
+            <button class="icon-btn" data-act="comment" data-id="${p.id}" title="Encourage (${p.comment_count || 0})" aria-label="Encourage">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            ${canMark ? `<button class="icon-btn" data-act="answered" data-id="${p.id}" title="Mark as answered" aria-label="Mark answered">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>` : ''}
+          </div>
+        </div>
+      </div>
+    </article>`;
+}
+
+function bindCardEvents(root) {
+  root.querySelectorAll('[data-act="pray"]').forEach(btn => btn.addEventListener('click', () => togglePrayed(btn.dataset.id)));
+  root.querySelectorAll('[data-act="comment"]').forEach(btn => btn.addEventListener('click', () => openPrayerModal(btn.dataset.id)));
+  root.querySelectorAll('[data-act="answered"]').forEach(btn => btn.addEventListener('click', () => handleMarkAnswered(btn.dataset.id)));
+}
+
+function handleMarkAnswered(id) {
+  const note = prompt("Share a brief testimony of how this prayer was answered (optional):", "");
+  markAnswered(id, note && note.trim() ? note.trim() : null);
+}
+
+// ---------- RENDER: WALL ----------
+function renderWall() {
+  const root = document.getElementById('wall');
+  if (state.loading) { root.innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>Loading prayers…</div>`; return; }
+  const list = filterAndSort(state.prayers);
+  const total = state.prayers.filter(p => !p.answered).length;
+  document.getElementById('wall-count').textContent = `${total} open ${total === 1 ? 'request' : 'requests'} · ${list.length} matching`;
+  if (list.length === 0) {
+    root.innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>No requests here yet</h3><p>Try a different category, or be the first to share a prayer.</p></div>`;
+    return;
+  }
+  root.innerHTML = list.map(cardHTML).join('');
+  bindCardEvents(root);
+}
+
+// ---------- RENDER: ANSWERED ----------
+function renderAnswered() {
+  const root = document.getElementById('answered');
+  if (state.loading) { root.innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>Loading…</div>`; return; }
+  const list = filterAndSort(state.prayers, { onlyAnswered: true });
+  if (list.length === 0) {
+    root.innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>No answered prayers yet</h3><p>When a prayer is answered, mark it so we can celebrate together.</p></div>`;
+    return;
+  }
+  root.innerHTML = list.map(cardHTML).join('');
+  bindCardEvents(root);
+}
+
+// ---------- RENDER: GROUPS ----------
+function renderGroups() {
+  const root = document.getElementById('groups');
+  if (state.loading) { root.innerHTML = `<div class="loading" style="grid-column:1/-1"><div class="spinner"></div>Loading groups…</div>`; return; }
+  if (state.groups.length === 0) {
+    root.innerHTML = `<div class="empty" style="grid-column:1/-1"><h3>No groups yet</h3><p>Create the first prayer group.</p></div>`;
+    return;
+  }
+  root.innerHTML = state.groups.map(g => `
+    <div class="group-card" data-id="${g.id}">
+      <h3>${escapeHTML(g.name)}</h3>
+      <p>${escapeHTML(g.description)}</p>
+      <div class="group-meta">
+        <span>${g.member_count || 0} ${g.member_count === 1 ? 'member' : 'members'}</span>
+        <span>${g.post_count || 0} ${g.post_count === 1 ? 'post' : 'posts'}</span>
+        <span>Created ${fmtTime(g.created_at)}</span>
+      </div>
+    </div>
+  `).join('');
+  root.querySelectorAll('.group-card').forEach(c => {
+    c.addEventListener('click', () => openGroupModal(c.dataset.id));
+  });
+}
+
+// ---------- MODAL: PRAYER / COMMENTS ----------
+async function openPrayerModal(id) {
+  const p = state.prayers.find(x => x.id === id);
+  if (!p) return;
+  const root = document.getElementById('modal-root');
+  root.innerHTML = `
+    <div class="modal-backdrop" data-close="1">
+      <div class="modal">
+        <div class="modal-head">
+          <div>
+            <span class="cat-badge ${p.answered?'answered':(p.urgent?'urgent':'')}">${escapeHTML(p.answered?'Answered · '+p.category:(p.urgent?'Urgent · '+p.category:p.category))}</span>
+            <h3 style="margin-top:8px;">${escapeHTML(p.title)}</h3>
+            <div style="color:var(--muted); font-size:13px;">— ${escapeHTML(p.author_name||'Anonymous')} · ${fmtTime(p.created_at)}</div>
+          </div>
+          <button class="close-btn" data-close="1">×</button>
+        </div>
+        <div style="color:var(--ink-2); font-size:15px; white-space:pre-wrap;">${escapeHTML(p.body)}</div>
+        <hr style="border:0; border-top:1px solid var(--line); margin:20px 0;" />
+        <div style="font-size:13px; font-weight:600; color:var(--ink-2); letter-spacing:.03em; text-transform:uppercase;">Words of encouragement</div>
+        <div class="thread" id="thread"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+        <form class="thread-form" id="thread-form">
+          <input id="thread-input" type="text" maxlength="500" placeholder="Leave an encouraging word..." required />
+          <button type="submit" class="btn accent">Send</button>
+        </form>
+      </div>
+    </div>`;
+  root.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', (e) => { if (e.target === el) root.innerHTML = ''; });
+  });
+  const form = document.getElementById('thread-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const val = document.getElementById('thread-input').value.trim();
+    if (!val) return;
+    await addComment(id, val, null);
+    document.getElementById('thread-input').value = '';
+    await renderThread(id);
+  });
+  await renderThread(id);
+}
+async function renderThread(prayerId) {
+  const thread = document.getElementById('thread');
+  if (!thread) return;
+  const comments = await fetchComments(prayerId);
+  thread.innerHTML = comments.length === 0
+    ? `<div style="color:var(--muted); font-size:14px;">Be the first to leave an encouraging word.</div>`
+    : comments.map(c => `
+        <div class="thread-item">
+          <span class="who">${escapeHTML(c.author_name || 'Friend')}</span>
+          <span class="when">${fmtTime(c.created_at)}</span>
+          <p>${escapeHTML(c.body)}</p>
+        </div>`).join('');
+}
+
+// ---------- MODAL: GROUP ----------
+async function openGroupModal(id) {
+  const g = state.groups.find(x => x.id === id);
+  if (!g) return;
+  const joined = state.joinedGroupIds.has(id);
+  const root = document.getElementById('modal-root');
+  root.innerHTML = `
+    <div class="modal-backdrop" data-close="1">
+      <div class="modal">
+        <div class="modal-head">
+          <div>
+            <h3>${escapeHTML(g.name)}</h3>
+            <div style="color:var(--muted); font-size:13px; margin-top:4px;">${g.member_count || 0} members · ${escapeHTML(g.description)}</div>
+          </div>
+          <button class="close-btn" data-close="1">×</button>
+        </div>
+        <div class="thread" id="group-thread"><div class="loading"><div class="spinner"></div>Loading…</div></div>
+        <form class="thread-form" id="group-form">
+          <input id="group-input" type="text" maxlength="1000" placeholder="Share a prayer or note with this group..." required />
+          <button type="submit" class="btn accent">Post</button>
+        </form>
+        <div style="margin-top:14px; text-align:right;">
+          <button class="btn" id="join-btn" style="padding:6px 12px; font-size:12px;">${joined ? '✓ Joined' : 'Join group'}</button>
+        </div>
+      </div>
+    </div>`;
+  root.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', (e) => { if (e.target === el) root.innerHTML = ''; });
+  });
+  document.getElementById('group-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const val = document.getElementById('group-input').value.trim();
+    if (!val) return;
+    await addGroupPost(id, val, null);
+    document.getElementById('group-input').value = '';
+    await renderGroupThread(id);
+    toast('Posted to ' + g.name);
+  });
+  document.getElementById('join-btn').addEventListener('click', async () => {
+    if (!state.joinedGroupIds.has(id)) {
+      await joinGroup(id);
+      await loadGroups();
+      openGroupModal(id);
+      renderGroups();
+    }
+  });
+  await renderGroupThread(id);
+}
+async function renderGroupThread(groupId) {
+  const thread = document.getElementById('group-thread');
+  if (!thread) return;
+  const posts = await fetchGroupPosts(groupId);
+  thread.innerHTML = posts.length === 0
+    ? `<div style="color:var(--muted); font-size:14px;">No messages yet. Share the first prayer or note for this group.</div>`
+    : posts.map(p => `
+        <div class="thread-item">
+          <span class="who">${escapeHTML(p.author_name || 'Friend')}</span>
+          <span class="when">${fmtTime(p.created_at)}</span>
+          <p>${escapeHTML(p.body)}</p>
+        </div>`).join('');
+}
+
+// ---------- MODAL: NEW GROUP ----------
+function openNewGroupModal() {
+  const root = document.getElementById('modal-root');
+  root.innerHTML = `
+    <div class="modal-backdrop" data-close="1">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>New prayer group</h3>
+          <button class="close-btn" data-close="1">×</button>
+        </div>
+        <form id="new-group-form">
+          <div class="field">
+            <label for="g-name">Group name</label>
+            <input id="g-name" type="text" required maxlength="60" />
+          </div>
+          <div class="field">
+            <label for="g-desc">Description</label>
+            <textarea id="g-desc" required maxlength="200" placeholder="Who is this group for?"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn" data-close="1">Cancel</button>
+            <button type="submit" class="btn accent">Create group</button>
+          </div>
+        </form>
+      </div>
+    </div>`;
+  root.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', (e) => { if (e.target === el) root.innerHTML = ''; });
+  });
+  document.getElementById('new-group-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('g-name').value.trim();
+    const desc = document.getElementById('g-desc').value.trim();
+    if (!name || !desc) return;
+    const g = await createGroup(name, desc);
+    if (g) {
+      root.innerHTML = '';
+      await loadGroups(); await loadJoinedGroups();
+      renderGroups();
+      toast('Group created · ' + name);
+    }
+  });
+}
+
+// ---------- ROUTING ----------
+function showPage(page) {
+  state.currentPage = page;
+  document.getElementById('hero').classList.toggle('hidden', page !== 'wall');
+  document.getElementById('top-verse').classList.toggle('hidden', page !== 'wall');
+  document.getElementById('wall-section').classList.toggle('hidden', page !== 'wall');
+  document.getElementById('answered-section').classList.toggle('hidden', page !== 'answered');
+  document.getElementById('groups-section').classList.toggle('hidden', page !== 'groups');
+  document.getElementById('submit-section').classList.toggle('hidden', page !== 'submit');
+  document.querySelectorAll('.nav-btn').forEach(b => { b.classList.toggle('active', b.dataset.page === page); });
+  renderCurrent();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function renderCurrent() {
+  if (state.currentPage === 'wall')     renderWall();
+  if (state.currentPage === 'answered') renderAnswered();
+  if (state.currentPage === 'groups')   renderGroups();
+}
+
+// ---------- SUBMIT FORM ----------
+document.getElementById('prayer-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const title = document.getElementById('f-title').value.trim();
+  const body  = document.getElementById('f-body').value.trim();
+  const cat   = document.getElementById('f-cat').value;
+  const name  = document.getElementById('f-name').value.trim();
+  const urgent = document.getElementById('f-urgent').checked;
+  if (!title || !body || !cat) return;
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Posting…';
+  const p = await createPrayer({ title, body, category: cat, name, urgent });
+  btn.disabled = false; btn.textContent = 'Post prayer request';
+  if (p) {
+    e.target.reset();
+    toast('Your prayer is on the wall · thank you for trusting us with it');
+    await loadPrayers();
+    showPage('wall');
+  }
+});
+
+// ---------- GLOBAL LISTENERS ----------
+document.addEventListener('click', (e) => {
+  const pageBtn = e.target.closest('[data-page]');
+  if (pageBtn) showPage(pageBtn.dataset.page);
+});
+document.getElementById('search').addEventListener('input', (e) => {
+  state.currentSearch = e.target.value.trim();
+  if (state.currentPage === 'wall') renderWall();
+  else if (state.currentPage === 'answered') renderAnswered();
+});
+document.getElementById('sort').addEventListener('change', (e) => {
+  state.currentSort = e.target.value;
+  if (state.currentPage === 'wall') renderWall();
+  else if (state.currentPage === 'answered') renderAnswered();
+});
+document.getElementById('new-group-btn').addEventListener('click', openNewGroupModal);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const root = document.getElementById('modal-root');
+    if (root.innerHTML) root.innerHTML = '';
+  }
+});
+
+// ---------- INIT ----------
+renderTopVerse();
+renderChips();
+
+(async function init() {
+  if (!IS_CONFIGURED) {
+    state.loading = false;
+    renderWall();
+    return;
+  }
+  await Promise.all([loadPrayers(), loadPrayedByMe(), loadGroups(), loadJoinedGroups()]);
+  state.loading = false;
+  renderCurrent();
+
+  // Live updates: refetch when anything changes. Simple + good enough for small scale.
+  sb.channel('pw-live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'prayers'     }, async () => { await loadPrayers();  renderCurrent(); })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'prayed_for'  }, async () => { await loadPrayers();  renderCurrent(); })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'group_posts' }, async () => { await loadGroups();   })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'groups'      }, async () => { await loadGroups();   if (state.currentPage === 'groups') renderGroups(); })
+    .subscribe();
+})();
+
+// Cycle a verse in the footer every 30s
+setInterval(() => {
+  const v = pickVerse();
+  const t = document.getElementById('footer-verse-text');
+  const r = document.getElementById('footer-verse-ref');
+  if (t && r) { t.textContent = '"' + v.text + '"'; r.textContent = v.ref; }
+}, 30000);
+</script>
+</body>
+</html>
