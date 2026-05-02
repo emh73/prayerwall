@@ -449,17 +449,17 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // to hide that amount option in the UI.
 const STRIPE_LINKS = {
   oneTime: {
-    5:      https://donate.stripe.com/test_fZu8wHdJf9b9fMo9x24AU01,
-    10:     https://donate.stripe.com/test_3cI3cneNj3QP57K38E4AU02,
-    25:     https://donate.stripe.com/test_9B67sD8oVdrp57KeRm4AU03,
-    50:     https://donate.stripe.com/test_cNifZ9dJf5YXas4gZu4AU05,
-    custom: https://donate.stripe.com/test_9B68wH9sZgDB1Vy6kQ4AU09, // a Payment Link with "customer chooses amount" enabled
+    5:     'https://donate.stripe.com/test_fZu8wHdJf9b9fMo9x24AU01',
+    10:     'https://donate.stripe.com/test_3cI3cneNj3QP57K38E4AU02',
+    25:     'https://donate.stripe.com/test_9B67sD8oVdrp57KeRm4AU03',
+    50:     'https://donate.stripe.com/test_cNifZ9dJf5YXas4gZu4AU05',
+    custom: 'https://donate.stripe.com/test_9B68wH9sZgDB1Vy6kQ4AU09', // a Payment Link with "customer chooses amount" enabled
   },
   recurring: {
-    5:   https://donate.stripe.com/test_bJefZ934BgDBas4fVq4AU06,
-    10:  https://donate.stripe.com/test_bJe8wH48F1IHas47oU4AU07,
-    25:  https://donate.stripe.com/test_bJe4gr5cJevtfMo24A4AU08,
-    50:  https://donate.stripe.com/test_bJeeV520xbjhgQscJe4AU04,
+    5:   'https://donate.stripe.com/test_bJefZ934BgDBas4fVq4AU06',
+    10:  'https://donate.stripe.com/test_bJe8wH48F1IHas47oU4AU07',
+    25:  'https://donate.stripe.com/test_bJe4gr5cJevtfMo24A4AU08',
+    50:  'https://donate.stripe.com/test_bJeeV520xbjhgQscJe4AU04',
   },
 };
 const STRIPE_CONFIGURED = Object.values(STRIPE_LINKS.oneTime).some(v => v && v.startsWith('http'))
