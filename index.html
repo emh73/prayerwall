@@ -168,6 +168,47 @@
   footer .verse { margin-bottom: 18px; }
   footer .verse blockquote { font-size: 17px; }
 
+  /* ---------- SUPPORT / DONATIONS ---------- */
+  .nav-support { color: var(--accent-2); }
+  .nav-support:hover { color: #b08c3d; background: var(--surface-2); }
+
+  .support-hero { max-width: 720px; margin: 0 auto 32px; text-align: center; }
+  .support-hero h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(32px, 5vw, 44px); letter-spacing: -0.015em; margin: 0 0 14px; }
+  .support-hero p { color: var(--ink-2); font-size: 16.5px; margin: 0 auto; max-width: 560px; }
+
+  .donate-card { max-width: 560px; margin: 0 auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+  .donate-tabs { display: flex; padding: 4px; background: var(--surface-2); border-radius: 999px; margin-bottom: 22px; }
+  .donate-tab { flex: 1; padding: 9px 14px; border: 0; background: transparent; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: all .15s; }
+  .donate-tab.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  .donate-tab .label-sub { font-size: 11px; color: var(--muted); display: block; font-weight: 400; margin-top: 1px; }
+
+  .amounts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .amount { padding: 14px 8px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); cursor: pointer; font-size: 16px; font-weight: 600; color: var(--ink); transition: all .15s; text-align: center; }
+  .amount:hover { border-color: var(--ink-2); }
+  .amount.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .amount-suffix { font-size: 11px; font-weight: 400; opacity: .8; display: block; margin-top: 1px; }
+  .amount.custom { font-size: 14px; font-weight: 500; }
+
+  .donate-cta { width: 100%; margin-top: 18px; padding: 14px 20px; font-size: 15px; }
+  .donate-note { text-align: center; margin-top: 14px; color: var(--muted); font-size: 12.5px; }
+  .donate-note svg { width: 12px; height: 12px; vertical-align: -2px; margin-right: 4px; }
+  .donate-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px auto 0; max-width: 720px; }
+  .donate-feature { padding: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+  .donate-feature h4 { font-family: var(--serif); font-weight: 500; margin: 0 0 6px; font-size: 17px; }
+  .donate-feature p { margin: 0; color: var(--ink-2); font-size: 13.5px; line-height: 1.5; }
+
+  /* Post-pray banner */
+  .pray-banner { position: fixed; left: 50%; bottom: 80px; transform: translateX(-50%); width: calc(100% - 32px); max-width: 440px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow-lg); z-index: 90; display: flex; align-items: center; gap: 14px; animation: bannerIn .25s ease; }
+  @keyframes bannerIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  .pray-banner-icon { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-2), #d9bc77); display: grid; place-items: center; flex-shrink: 0; color: #5a4818; font-size: 20px; }
+  .pray-banner-text { flex: 1; font-size: 13.5px; color: var(--ink-2); line-height: 1.4; }
+  .pray-banner-text strong { color: var(--ink); display: block; font-size: 14px; margin-bottom: 1px; }
+  .pray-banner-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .pray-banner-btn { padding: 7px 14px; font-size: 13px; border-radius: 999px; border: 0; background: var(--accent); color: #fff; cursor: pointer; font-weight: 500; }
+  .pray-banner-btn:hover { background: #244d43; }
+  .pray-banner-close { border: 0; background: transparent; color: var(--muted); font-size: 20px; cursor: pointer; line-height: 1; padding: 4px 6px; }
+  .pray-banner-close:hover { color: var(--ink); }
+
   .hidden { display: none !important; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
@@ -175,6 +216,10 @@
     .nav-inner { padding: 12px 16px; }
     .nav-links .nav-btn { padding: 8px 10px; font-size: 13px; }
     .nav-links .nav-btn[data-page="groups"] { display: none; }
+    .nav-links .nav-btn[data-page="support"] { display: none; }
+    .donate-features { grid-template-columns: 1fr; }
+    .pray-banner { padding: 14px; gap: 10px; }
+    .pray-banner-icon { width: 36px; height: 36px; font-size: 18px; }
     .hero { padding: 48px 20px 32px; }
     section.page { padding: 16px 16px 64px; }
     .form-wrap { padding: 22px; }
@@ -200,6 +245,7 @@
       <button class="nav-btn active" data-page="wall">Wall</button>
       <button class="nav-btn" data-page="answered">Answered</button>
       <button class="nav-btn" data-page="groups">Groups</button>
+      <button class="nav-btn nav-support" data-page="support">Support</button>
       <button class="nav-cta" data-page="submit">+ Share a prayer</button>
     </div>
   </div>
@@ -310,14 +356,75 @@
   </form>
 </section>
 
+<section id="support-section" class="page hidden">
+  <div class="support-hero">
+    <h2>Support Prayer Wall</h2>
+    <p>This is a free, ad-free space for prayer. Your gift keeps the lights on — domain, hosting, and the time it takes to add new features as the community grows.</p>
+  </div>
+
+  <div class="donate-card">
+    <div class="donate-tabs" role="tablist">
+      <button class="donate-tab active" data-mode="oneTime" role="tab">
+        One-time gift
+        <span class="label-sub">A single donation</span>
+      </button>
+      <button class="donate-tab" data-mode="recurring" role="tab">
+        Monthly support
+        <span class="label-sub">Become a sustainer</span>
+      </button>
+    </div>
+
+    <div class="amounts" id="amounts-grid">
+      <!-- Filled by JS -->
+    </div>
+
+    <a id="donate-cta" class="btn accent donate-cta" href="#" target="_blank" rel="noopener">
+      Continue to checkout →
+    </a>
+
+    <div class="donate-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secure checkout via Stripe · Cards, Apple Pay, Google Pay
+    </div>
+  </div>
+
+  <div class="donate-features">
+    <div class="donate-feature">
+      <h4>Keeps it free</h4>
+      <p>No ads, no paywalls. Anyone can post, anyone can pray, always.</p>
+    </div>
+    <div class="donate-feature">
+      <h4>Funds new features</h4>
+      <p>Email notifications, prayer reminders, real moderation tools — built as gifts come in.</p>
+    </div>
+    <div class="donate-feature">
+      <h4>Pays it forward</h4>
+      <p>Surplus is donated to a vetted relief ministry quarterly. Reports posted on the wall.</p>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="verse">
     <blockquote id="footer-verse-text">"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."</blockquote>
     <cite id="footer-verse-ref">Philippians 4:6</cite>
   </div>
-  <div>Prayer Wall · A community prayer space</div>
+  <div>Prayer Wall · A community prayer space · <a href="#" data-page="support">Support this site</a></div>
   <div style="margin-top:6px; font-size:12px;">Requests are visible to all visitors. Please don't include sensitive personal details.</div>
 </footer>
+
+<!-- Post-pray support banner (hidden until shown by JS) -->
+<div id="pray-banner" class="pray-banner hidden" role="status" aria-live="polite">
+  <div class="pray-banner-icon">♥</div>
+  <div class="pray-banner-text">
+    <strong>Thank you for praying.</strong>
+    Help keep Prayer Wall free for everyone.
+  </div>
+  <div class="pray-banner-actions">
+    <button class="pray-banner-btn" id="pray-banner-go" data-page="support">Support</button>
+    <button class="pray-banner-close" id="pray-banner-close" aria-label="Dismiss">×</button>
+  </div>
+</div>
 
 <div id="modal-root"></div>
 <div id="toast-root"></div>
@@ -335,6 +442,28 @@
 // Get these from: Supabase Dashboard → Project Settings → API
 const SUPABASE_URL      = 'https://wpkvhkvgoopcswlwvoou.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa3Zoa3Znb29wY3N3bHd2b291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4MTc5NjQsImV4cCI6MjA5MjM5Mzk2NH0.SwSEm2J9sEkXkJZkeXl3bMPGGUE8xdpQePogbDNmAjM';
+
+// >>> PASTE YOUR STRIPE PAYMENT LINKS HERE <<<
+// See DEPLOY.md → Step 8 for how to create these. Each value is a URL like
+// "https://buy.stripe.com/abc123". Leave any link as the placeholder string
+// to hide that amount option in the UI.
+const STRIPE_LINKS = {
+  oneTime: {
+    5:      'YOUR_STRIPE_LINK_5_ONETIME',
+    10:     'YOUR_STRIPE_LINK_10_ONETIME',
+    25:     'YOUR_STRIPE_LINK_25_ONETIME',
+    50:     'YOUR_STRIPE_LINK_50_ONETIME',
+    custom: 'YOUR_STRIPE_LINK_CUSTOM_ONETIME', // a Payment Link with "customer chooses amount" enabled
+  },
+  recurring: {
+    5:   'YOUR_STRIPE_LINK_5_MONTHLY',
+    10:  'YOUR_STRIPE_LINK_10_MONTHLY',
+    25:  'YOUR_STRIPE_LINK_25_MONTHLY',
+    50:  'YOUR_STRIPE_LINK_50_MONTHLY',
+  },
+};
+const STRIPE_CONFIGURED = Object.values(STRIPE_LINKS.oneTime).some(v => v && v.startsWith('http'))
+                       || Object.values(STRIPE_LINKS.recurring).some(v => v && v.startsWith('http'));
 
 const IS_CONFIGURED = SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY.length > 20;
 
@@ -835,7 +964,12 @@ function showPage(page) {
   document.getElementById('answered-section').classList.toggle('hidden', page !== 'answered');
   document.getElementById('groups-section').classList.toggle('hidden', page !== 'groups');
   document.getElementById('submit-section').classList.toggle('hidden', page !== 'submit');
+  document.getElementById('support-section').classList.toggle('hidden', page !== 'support');
   document.querySelectorAll('.nav-btn').forEach(b => { b.classList.toggle('active', b.dataset.page === page); });
+  if (page === 'support') {
+    hidePrayBanner();
+    renderDonate();
+  }
   renderCurrent();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -888,6 +1022,107 @@ document.addEventListener('keydown', (e) => {
     if (root.innerHTML) root.innerHTML = '';
   }
 });
+
+// ---------- DONATIONS ----------
+const donateState = { mode: 'oneTime', amount: 25 };
+
+function renderDonate() {
+  const grid = document.getElementById('amounts-grid');
+  if (!grid) return;
+  const set = STRIPE_LINKS[donateState.mode] || {};
+  const tiers = donateState.mode === 'oneTime'
+    ? [{ amount: 5 }, { amount: 10 }, { amount: 25 }, { amount: 50, suffix: '' }]
+    : [{ amount: 5 }, { amount: 10 }, { amount: 25 }, { amount: 50 }];
+
+  // If selected amount has no link, drop to first available
+  const validAmounts = Object.keys(set).filter(k => set[k] && set[k].startsWith('http')).map(k => k === 'custom' ? 'custom' : Number(k));
+  if (!validAmounts.includes(donateState.amount)) {
+    donateState.amount = validAmounts[0] ?? 25;
+  }
+
+  grid.innerHTML = tiers.map(t => {
+    const active = t.amount === donateState.amount;
+    return `<button class="amount ${active ? 'active' : ''}" data-amount="${t.amount}">$${t.amount}<span class="amount-suffix">${donateState.mode === 'recurring' ? '/mo' : ''}</span></button>`;
+  }).join('') + (donateState.mode === 'oneTime' ? `
+    <button class="amount custom ${donateState.amount === 'custom' ? 'active' : ''}" data-amount="custom" style="grid-column: span 4; padding: 12px;">
+      Choose your own amount
+    </button>` : '');
+
+  grid.querySelectorAll('.amount').forEach(b => {
+    b.addEventListener('click', () => {
+      const v = b.dataset.amount;
+      donateState.amount = v === 'custom' ? 'custom' : Number(v);
+      renderDonate();
+    });
+  });
+
+  // Update tab UI
+  document.querySelectorAll('.donate-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.mode === donateState.mode);
+  });
+
+  // Update CTA href
+  const cta = document.getElementById('donate-cta');
+  const link = (STRIPE_LINKS[donateState.mode] || {})[donateState.amount];
+  const configured = link && link.startsWith('http');
+  if (configured) {
+    cta.setAttribute('href', link);
+    cta.textContent = donateState.amount === 'custom'
+      ? 'Continue to checkout →'
+      : `Donate $${donateState.amount}${donateState.mode === 'recurring' ? '/month' : ''} →`;
+    cta.style.pointerEvents = '';
+    cta.style.opacity = '';
+  } else {
+    cta.setAttribute('href', '#');
+    cta.textContent = 'Donations not yet configured';
+    cta.style.pointerEvents = 'none';
+    cta.style.opacity = '0.5';
+  }
+}
+
+document.querySelectorAll('.donate-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    donateState.mode = tab.dataset.mode;
+    // Reset to a reasonable default amount when switching modes
+    if (donateState.amount === 'custom' && donateState.mode === 'recurring') donateState.amount = 25;
+    renderDonate();
+  });
+});
+
+// ---------- POST-PRAY BANNER ----------
+const BANNER_KEY = 'pw.banner_dismissed_at';
+let prayCountThisSession = 0;
+
+function shouldShowBanner() {
+  if (!STRIPE_CONFIGURED) return false;
+  const dismissed = parseInt(localStorage.getItem(BANNER_KEY) || '0', 10);
+  // Don't re-show within 30 days of dismissal
+  if (dismissed && Date.now() - dismissed < 30 * 24 * 60 * 60 * 1000) return false;
+  return prayCountThisSession >= 1;
+}
+function showPrayBanner() {
+  if (!shouldShowBanner()) return;
+  document.getElementById('pray-banner').classList.remove('hidden');
+}
+function hidePrayBanner() {
+  document.getElementById('pray-banner').classList.add('hidden');
+}
+document.getElementById('pray-banner-close').addEventListener('click', () => {
+  localStorage.setItem(BANNER_KEY, String(Date.now()));
+  hidePrayBanner();
+});
+
+// Wrap togglePrayed to trigger banner after a successful prayer
+const _origTogglePrayed = togglePrayed;
+togglePrayed = async function (prayerId) {
+  const wasPrayed = state.prayedIds.has(prayerId);
+  await _origTogglePrayed(prayerId);
+  // Only count when NEWLY adding a prayer (not toggling off)
+  if (!wasPrayed && state.prayedIds.has(prayerId)) {
+    prayCountThisSession++;
+    setTimeout(showPrayBanner, 600);
+  }
+};
 
 // ---------- INIT ----------
 renderTopVerse();
